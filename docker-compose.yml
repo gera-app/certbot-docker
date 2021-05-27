@@ -1,17 +1,13 @@
-version: '3.4'
-
+version: '3'
 services:
-  nginx:
-    image: nginx:1.15-alpine
+
+  proxy:
+    container_name: nginx-certbot
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     ports:
-      - "80:80"
-      - "443:443"
+      - '8080:80'
     volumes:
-      - ./data/nginx:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - ./letsencrypt:/etc/letsencrypt 
+      - ./default.conf:/etc/nginx/conf.d/default.conf
